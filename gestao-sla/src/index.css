@@ -1,0 +1,27 @@
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../node_modules/bootstrap-icons/font/bootstrap-icons.min.css';
+
+.table-wrapper {
+    max-height: 69vh; 
+    overflow-y: auto; 
+}
+
+.section-main {
+    max-height: 89.5vh; 
+    overflow-y: auto; 
+}
+
+.scrollspy-example {
+    position: relative;
+    height: 200px;
+    overflow: auto;
+  }
+
+.to-header {
+    bottom: 0;
+    opacity: 0;
+    padding: 2rem;
+    position: fixed;
+    right: 0;
+    z-index: 999;
+}
