@@ -17,12 +17,13 @@ const CadastroEventoEditar = () => {
         foto: null,
         dataCadastro: "",
         usuario: {
-            id: null
+            id: null,
+            nome: ""
         },
-        statusPromocao: ""
+        statusCadastroEvento: ""
     };
 
-    const [cadastroevento, setPromocao] = useState(initialObjectState);
+    const [cadastroevento, setCadastroEvento] = useState(initialObjectState);
     const _dbRecords = useRef(true);
 
     const [file, setFile] = useState("");
@@ -40,7 +41,7 @@ const CadastroEventoEditar = () => {
     const handleChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        setPromocao(cadastroevento => ({ ...cadastroevento, [name]: value }));
+        setCadastroEvento(cadastroevento => ({ ...cadastroevento, [name]: value }));
     }
 
     useEffect(() => {
@@ -48,13 +49,14 @@ const CadastroEventoEditar = () => {
             CadastroEventoService.findById(id)
                 .then(response => {
                     const cadastroevento = response.data;
-                    setPromocao(cadastroevento);
+                    setCadastroEvento(cadastroevento);
                     console.log(cadastroevento);
                 })
                 .catch(e => {
                     console.log(e);
                 });
-        } return () => {
+        }
+        return () => {
             _dbRecords.current = false;
         }
     }, [id]);
@@ -68,10 +70,6 @@ const CadastroEventoEditar = () => {
             (response) => {
                 setMessage(response.data.message);
                 setSuccessful(true);
-                /*window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth'
-                })*/
             }, (error) => {
                 const resMessage =
                     (error.response &&
@@ -91,7 +89,6 @@ const CadastroEventoEditar = () => {
             (response) => {
                 alert(response.data.message);
                 window.location.reload();
-
             }, (error) => {
                 const message = error.response.data.message;
                 setMessage(message);
@@ -113,36 +110,28 @@ const CadastroEventoEditar = () => {
                         {!successful && (
                             <>
                                 <div className="col-md-2">
-                                    <label htmlFor="inputId" className="form-label mb-1 fw-bold mb-1 fw-bold">ID:</label>
+                                    <label htmlFor="inputId" className="form-label mb-1 fw-bold">ID:</label>
                                     <input type="text" className="form-control text-center" id="inputId" readOnly
-                                        name="nome"
-                                        value={cadastroevento.id || ""}
-                                        onChange={handleChange} />
+                                        value={cadastroevento.id || ""} />
                                 </div>
                                 <div className="col-md-3">
-                                    <label htmlFor="inputdata" className="form-label mb-1 fw-bold mb-1 fw-bold">Data de Criação:</label>
+                                    <label htmlFor="inputData" className="form-label mb-1 fw-bold">Data de Criação:</label>
                                     <input type="text" className="form-control text-center" id="inputData" readOnly
-                                        name="nome"
-                                        value={cadastroevento.dataCadastro || ""}
-                                        onChange={handleChange} />
+                                        value={cadastroevento.dataCadastro || ""} />
                                 </div>
                                 <div className="col-md-5">
-                                    <label htmlFor="inputresp" className="form-label mb-1 fw-bold mb-1 fw-bold">Responsável:</label>
+                                    <label htmlFor="inputresp" className="form-label mb-1 fw-bold">Responsável:</label>
                                     <input type="text" className="form-control text-center" id="inputresp" readOnly
-                                        name="nome"
-                                        value={cadastroevento.usuario.nome|| ""}
-                                        onChange={handleChange} />
+                                        value={cadastroevento.usuario.nome || ""} />
                                 </div>
                                 <div className="col-md-2">
-                                    <label htmlFor="inputstatusCadastroEvento" className="form-label mb-1 fw-bold mb-1 fw-bold">Status:</label>
+                                    <label htmlFor="inputstatusCadastroEvento" className="form-label mb-1 fw-bold">Status:</label>
                                     <input type="text" className="form-control text-center" id="inputstatusCadastroEvento" readOnly
-                                        name="nome"
-                                        value={cadastroevento.statusCadastroEvento || ""}
-                                        onChange={handleChange} />
+                                        value={cadastroevento.statusCadastroEvento || ""} />
                                 </div>
 
                                 <div className="col-md-12">
-                                    <label htmlFor="inputNome" className="form-label mb-1 fw-bold mb-1 fw-bold">Nome:</label>
+                                    <label htmlFor="inputNome" className="form-label mb-1 fw-bold">Nome:</label>
                                     <input type="text" className="form-control" id="inputNome"
                                         name="nome"
                                         value={cadastroevento.nome || ""}
@@ -159,7 +148,7 @@ const CadastroEventoEditar = () => {
                                 </div>
 
                                 <div className="col-lg-12 text-center my-3">
-                                    <img className={`shadow-lg ${chosenImage ? 'opacity-25' : ''}`}  src={cadastroevento.foto ? 'data:image/jpeg;base64,' + cadastroevento.foto : logo} alt="..." />
+                                    <img className={`shadow-lg ${chosenImage ? 'opacity-25' : ''}`} src={cadastroevento.foto ? 'data:image/jpeg;base64,' + cadastroevento.foto : logo} alt="..." />
                                 </div>
 
                                 <div className="col-md-12">
@@ -195,4 +184,4 @@ const CadastroEventoEditar = () => {
     )
 }
 
-export default CadastroEventoEditar
+export default CadastroEventoEditar;

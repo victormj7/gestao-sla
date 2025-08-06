@@ -2,35 +2,26 @@ import { useNavigate } from "react-router-dom"
 import Header from "../../components/Header/Header"
 import Sidebar from '../../components/Menu/Sidebar'
 import logo from '../../assets/images/home.png'
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import CadastroEventoService from "../../services/CadastroEventoService"
 
 const CadastroEventosLista = () => {
-
     const navigate = useNavigate();
-    const _dbRecords = useRef(true);
-
-    const [cadastroeventos, setCadastroEvento] = useState([]);
+    const [cadastroEventos, setCadastroEventos] = useState([]);
 
     const getId = (id) => {
-        navigate(`/cadastroeventoeditar/${id}`)
+        navigate(`/cadastroeventoeditar/${id}`);
     }
 
     useEffect(() => {
-        if (_dbRecords.current) {
-            CadastroEventoService.findAll().then(
-                (response) => {
-                    const cadastroeventos = response.data;
-                    setCadastroEvento(cadastroeventos);
-                }
-            ).catch((error) => {
-                setCadastroEvento([]);
-                console.log(error);
+        CadastroEventoService.findAll()
+            .then(response => {
+                setCadastroEventos(response.data);
             })
-        }
-        return () => {
-            _dbRecords.current = false;
-        }
+            .catch(error => {
+                setCadastroEventos([]);
+                console.log(error);
+            });
     }, []);
 
     return (
@@ -44,14 +35,14 @@ const CadastroEventosLista = () => {
                 />
                 <section className="m-2 p-2 shadow-lg">
                     <div className="m-2">
-                            <div className="btn btn-info position-relative fw-bold">
-                                Total de Evento
-                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {cadastroeventos.length}
-                                    <span className="visually-hidden">total de eventos</span>
-                                </span>
-                            </div>
+                        <div className="btn btn-info position-relative fw-bold">
+                            Total de Eventos
+                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {cadastroEventos.length}
+                                <span className="visually-hidden">total de eventos</span>
+                            </span>
                         </div>
+                    </div>
 
                     <div>
                         <table className="table table-striped table-hover">
@@ -67,17 +58,20 @@ const CadastroEventosLista = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                            {cadastroeventos?.map((cadastroevento) => (
-                                    <tr key={cadastroevento.id}>
-                                        <td scope="row">{cadastroevento.id}</td>
-                                        <td>{cadastroevento.nome}</td>
-                                        <td>{cadastroevento.dataCadastro}</td>
-                                        <td>{cadastroevento.info}</td>
-                                        <td>{cadastroevento.usuario.nome}</td>
-                                        <td>{cadastroevento.statusPromocao}</td>
+                                {cadastroEventos.map((evento) => (
+                                    <tr key={evento.id}>
+                                        <td>{evento.id}</td>
+                                        <td>{evento.nome}</td>
+                                        <td>{evento.dataCadastro}</td>
+                                        <td>{evento.info}</td>
+                                        <td>{evento.usuario?.nome}</td>
+                                        <td>{evento.statusCadastroEvento}</td>
                                         <td>
-                                            <button type="button" onClick={() => getId(cadastroevento.id)}
-                                                className="btn btn-sm btn-warning">
+                                            <button
+                                                type="button"
+                                                onClick={() => getId(evento.id)}
+                                                className="btn btn-sm btn-warning"
+                                            >
                                                 <i className="bi bi-envelope-open me-2"></i>Abrir
                                             </button>
                                         </td>
@@ -89,7 +83,7 @@ const CadastroEventosLista = () => {
                 </section>
             </div>
         </div>
-    )
+    );
 }
 
-export default CadastroEventosLista
+export default CadastroEventosLista;
