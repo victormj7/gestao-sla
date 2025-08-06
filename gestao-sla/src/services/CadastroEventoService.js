@@ -1,5 +1,5 @@
 import http from "../common/http-common";
-const API_URL = "produto/";
+const API_URL = "evento/";
 
 const findAll = () => {
   return http.mainInstance.get(API_URL + "findAllCadastroEvento");
@@ -13,8 +13,13 @@ const addCadastroEvento = (file, data, usuario) => {
   const formData = new FormData();
 
   formData.append('nome', data.nome);
+  formData.append ('descricao',descricao);
+ formData.append ('localevento',localEvento);
+  formData.append('quantidadelugares', quantidadeLugares);
+  formData.append('dataevento',dataEvento);
+ formData.append('periodo',periodo);
+  formData.append('nome', data.nome);
   formData.append('info', data.info || '');
-  formData.append('dataCadastro', data.dataCadastro || '');
   formData.append('usuario_id', usuario.id);
 
   if (file) {
